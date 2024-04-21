@@ -1,5 +1,6 @@
 package uk.ac.le.co2103.part2.shoppinglistapp.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -13,7 +14,7 @@ public interface ProductDao {
     @Insert
     void insert(Product product);
     @Query("SELECT * FROM Product WHERE listId = :listId")
-    List<Product> getProductsForList(int listId);
+    LiveData<List<Product>>getProductsForList(int listId);
 
     // Other CRUD operations for Product
 }
