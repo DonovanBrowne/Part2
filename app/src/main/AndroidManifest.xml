@@ -17,6 +17,13 @@
             </intent-filter>
         </activity>
         <activity android:name="uk.ac.le.co2103.part2.shoppinglistapp.CreateListActivity" />
+        <activity android:name="uk.ac.le.co2103.part2.shoppinglistapp.ShoppingListActivity"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
     </application>
 
     <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
