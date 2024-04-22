@@ -3,14 +3,13 @@ package uk.ac.le.co2103.part2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
+
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -35,10 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ShoppingListAdapter();
-        recyclerView.setAdapter(adapter);
 
         database = AppDatabase.getInstance(this);
+
+        adapter = new ShoppingListAdapter(database);
+        recyclerView.setAdapter(adapter);
 
         // Load shopping lists from database and set them to adapter
         loadShoppingLists();
