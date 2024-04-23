@@ -8,8 +8,6 @@ public class Product {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-
-
     private String name;
     private int quantity;
     private String unit;

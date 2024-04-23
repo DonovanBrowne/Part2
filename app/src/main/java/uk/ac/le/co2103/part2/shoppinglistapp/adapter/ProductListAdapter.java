@@ -79,4 +79,5 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             unitTextView.setText(product.getUnit());
         }
     }
+
 }
