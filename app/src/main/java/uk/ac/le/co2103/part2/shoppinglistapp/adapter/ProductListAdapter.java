@@ -16,6 +16,16 @@ import uk.ac.le.co2103.part2.shoppinglistapp.Product;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductViewHolder> {
     private List<Product> products;
+    private OnItemClickListener listener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Product product);
+    }
+
 
     public void setProducts(List<Product> products) {
         this.products = products;
@@ -54,9 +64,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
                         Product product = products.get(position);
                         Toast.makeText(v.getContext(), "Product: " + product.getName(), Toast.LENGTH_SHORT).show();
+                        listener.onItemClick(products.get(position));
                     }
                 }
             });
