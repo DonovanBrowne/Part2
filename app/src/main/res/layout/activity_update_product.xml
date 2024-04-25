@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/hint_product_name"
+        android:inputType="text"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/hint_quantity"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@+id/editTextName" />
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/save"
+        app:layout_constraintTop_toBottomOf="@+id/editTextQuantity" />
+
+    <Button
+        android:id="@+id/buttonDecrement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextQuantity"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="-280dp"
+        android:layout_toStartOf="@id/buttonSave"
+        android:text="-" />
+
+    <Button
+        android:id="@+id/buttonIncrement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextQuantity"
+        android:layout_marginStart="205dp"
+        android:layout_marginTop="12dp"
+        android:layout_toEndOf="@id/buttonSave"
+        android:text="+" />
+
+    <Spinner
+        android:id="@+id/spinnerUnit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:entries="@array/unit_options"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSave" />
+
+</RelativeLayout>
+
+
+
