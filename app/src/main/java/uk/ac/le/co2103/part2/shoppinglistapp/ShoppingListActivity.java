@@ -67,10 +67,11 @@ public class ShoppingListActivity extends AppCompatActivity {
         @Override
         public void onItemClick(Product product) {
             // Display a dialog with options to edit or delete the selected product
-            showDialog(product);
+            showEditDialog(product);
         }
     });
 }
+
     private void loadProducts(int shoppingListId) {
         database.productDao().getProductsForList(shoppingListId).observe(this, new Observer<List<Product>>() {
             @Override
@@ -84,7 +85,7 @@ public class ShoppingListActivity extends AppCompatActivity {
     }
 
 
-    private void showDialog(final Product product) {
+    private void showEditDialog(final Product product) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Options")
                 .setItems(new CharSequence[]{"Edit", "Delete"}, new DialogInterface.OnClickListener() {
@@ -92,15 +93,23 @@ public class ShoppingListActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         switch (i) {
                             case 0: // Edit
-                                // Implement edit functionality
+                                Intent editIntent = new Intent(ShoppingListActivity.this, UpdateProductActivity.class);
+                                editIntent.putExtra("PRODUCT_ID", product.getId());
+                                startActivity(editIntent);
                                 break;
                             case 1: // Delete
-                                // Implement delete functionality
+                                deleteProduct(product);
                                 break;
                         }
                     }
                 });
         builder.create().show();
     }
+
+    private void deleteProduct(Product product) {
+        database.productDao().deleteProduct(product);
+    }
 }
+
+
 

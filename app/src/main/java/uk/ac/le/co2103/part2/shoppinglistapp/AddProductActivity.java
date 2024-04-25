@@ -50,6 +50,8 @@ public void onAddButtonClick(View view) {
         // Creates new product object
         Product product = new Product(name, quantity, unit);
 
+        database.productDao().insertProduct(product);
+
         // Navigate back to ShoppingListActivity
         finish();
     }
