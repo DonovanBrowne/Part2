@@ -24,9 +24,6 @@ public class ShoppingListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ProductListAdapter adapter;
     private AppDatabase database;
-
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,18 +37,16 @@ public class ShoppingListActivity extends AppCompatActivity {
 
         database = AppDatabase.getInstance(this);
 
-
         // Retrieve the SHOPPING_LIST_ID from the intent
         int shoppingListId = getIntent().getIntExtra("SHOPPING_LIST_ID", -1);
         if (shoppingListId != -1) {
             // Load the products for the given shopping list ID
 
-            loadProducts(shoppingListId);
+            loadProducts();
         } else {
             Toast.makeText(this, "Error: Shopping list ID not found.", Toast.LENGTH_SHORT).show();
             finish(); // Close the activity if no ID is found
         }
-
 
         FloatingActionButton fabAddProduct = findViewById(R.id.fabAddProduct);
         fabAddProduct.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +57,6 @@ public class ShoppingListActivity extends AppCompatActivity {
             }
         });
 
-
         adapter.setOnItemClickListener(new ProductListAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(Product product) {
@@ -72,15 +66,13 @@ public class ShoppingListActivity extends AppCompatActivity {
     });
 }
 
-    private void loadProducts(int shoppingListId) {
-        database.productDao().getProductsForList(shoppingListId).observe(this, new Observer<List<Product>>() {
+    private void loadProducts() {
+        database.productDao().getAllProducts().observe(this, new Observer<List<Product>>() {
             @Override
             public void onChanged(@Nullable final List<Product> products) {
                 // Update the cached copy of the products in the adapter.
                 adapter.setProducts(products);
-
             }
-
         });
     }
 

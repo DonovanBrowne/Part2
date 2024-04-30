@@ -23,6 +23,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <activity android:name="uk.ac.le.co2103.part2.shoppinglistapp.AddProductActivity" />
+        <activity android:name="uk.ac.le.co2103.part2.shoppinglistapp.UpdateProductActivity" />
 
     </application>
 

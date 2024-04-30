@@ -14,23 +14,26 @@
             android:id="@+id/editTextName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints="name"
             android:hint="@string/product_name"
             android:inputType="text"
-            android:autofillHints="name" />
+            android:minHeight="48dp" />
 
         <EditText
             android:id="@+id/editTextQuantity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints="quantity"
             android:hint="@string/quantity_label"
             android:inputType="number"
-            android:autofillHints="quantity" />
+            android:minHeight="48dp" />
 
         <Spinner
             android:id="@+id/spinnerUnit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/labels_unit" />
+            android:entries="@array/labels_unit"
+            android:minHeight="48dp" />
 
         <Button
             android:id="@+id/buttonAdd"
