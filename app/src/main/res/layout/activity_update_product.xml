@@ -1,66 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
 
-
-    <EditText
-        android:id="@+id/editTextName"
+    <TextView
+        android:id="@+id/productName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="@string/hint_product_name"
-        android:inputType="text"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:hint="Product Name"
+        android:textSize="20sp"
+        android:minHeight="48dp"
+        android:gravity="center" />
 
     <EditText
         android:id="@+id/editTextQuantity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="@string/hint_quantity"
-        android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@+id/editTextName" />
-
-    <Button
-        android:id="@+id/buttonSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="@string/save"
-        app:layout_constraintTop_toBottomOf="@+id/editTextQuantity" />
+        android:layout_below="@id/productName"
+        android:hint="Quantity"
+        android:minHeight="48dp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/productUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/productName"
+        android:layout_toRightOf="@id/editTextQuantity"
+        android:textSize="18sp"
+        android:hint="Unit"
+        android:minHeight="48dp"
+        android:gravity="center"/>
 
     <Button
         android:id="@+id/buttonDecrement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/editTextQuantity"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="-280dp"
-        android:layout_toStartOf="@id/buttonSave"
-        android:text="-" />
+        android:text="-"
+        android:gravity="center"/>
 
     <Button
         android:id="@+id/buttonIncrement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/editTextQuantity"
-        android:layout_marginStart="205dp"
-        android:layout_marginTop="12dp"
-        android:layout_toEndOf="@id/buttonSave"
-        android:text="+" />
+        android:layout_toRightOf="@id/buttonDecrement"
+        android:text="+"
+        android:gravity="center"/>
 
-    <Spinner
-        android:id="@+id/spinnerUnit"
+    <Button
+        android:id="@+id/buttonSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:entries="@array/unit_options"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSave" />
+        android:layout_below="@id/buttonDecrement"
+        android:text="Save"
+        android:gravity="center"/>
 
 </RelativeLayout>
-
 
 

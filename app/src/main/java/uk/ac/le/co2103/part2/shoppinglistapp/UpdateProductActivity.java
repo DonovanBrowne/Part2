@@ -1,10 +1,11 @@
 package uk.ac.le.co2103.part2.shoppinglistapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,8 +14,11 @@ import uk.ac.le.co2103.part2.R;
 import uk.ac.le.co2103.part2.database.AppDatabase;
 
 public class UpdateProductActivity extends AppCompatActivity {
-    private EditText editTextName, editTextQuantity;
-    private Spinner spinnerUnit;
+
+    private TextView productName;
+    private EditText editTextQuantity;
+
+    private TextView productUnit;
     private Button buttonSave;
     private int productId;
     private AppDatabase database;
@@ -25,12 +29,12 @@ public class UpdateProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_product);
 
-        editTextName = findViewById(R.id.editTextName);
-        editTextQuantity = findViewById(R.id.editTextQuantity);
-        spinnerUnit = findViewById(R.id.spinnerUnit);
-        buttonSave = findViewById(R.id.buttonSave);
-
         database = AppDatabase.getInstance(this);
+
+        productName = findViewById(R.id.productName);
+        editTextQuantity = findViewById(R.id.editTextQuantity);
+        buttonSave = findViewById(R.id.buttonSave);
+        productUnit = findViewById(R.id.productUnit);
 
         productId = getIntent().getIntExtra("PRODUCT_ID", -1);
         if (productId != -1) {
@@ -42,6 +46,13 @@ public class UpdateProductActivity extends AppCompatActivity {
 
         Button buttonIncrement = findViewById(R.id.buttonIncrement);
         Button buttonDecrement = findViewById(R.id.buttonDecrement);
+
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSaveButtonClick(v);
+            }
+        });
 
         buttonIncrement.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,20 +70,22 @@ public class UpdateProductActivity extends AppCompatActivity {
 
     }
 
-
     private void getProductDetails(int productId) {
-        productToUpdate = database.productDao().getProductById(productId);
-
-        if (productToUpdate != null) {
-            // Update EditText and Spinner with retrieved details
-            editTextName.setText(productToUpdate.getName());
-            editTextQuantity.setText(String.valueOf(productToUpdate.getQuantity()));
-            spinnerUnit.setSelection(getIndex(spinnerUnit, productToUpdate.getUnit()));
-        } else {
-            Toast.makeText(this, "Error: Product not found.", Toast.LENGTH_SHORT).show();
-            finish();
-        }
+        new Thread(() -> {
+            final Product product = database.productDao().getProductById(productId);
+            runOnUiThread(() -> {
+                if (product != null) {
+                    productName.setText(product.getName());
+                    editTextQuantity.setText(String.valueOf(product.getQuantity()));
+                    productUnit.setText((product.getUnit()));
+                } else {
+                    Toast.makeText(this, "Error: Product not found.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
+        }).start();
     }
+
     private void incrementQuantity() {
         String quantityStr = editTextQuantity.getText().toString().trim();
         int quantity = quantityStr.isEmpty() ? 0 : Integer.parseInt(quantityStr);
@@ -89,37 +102,60 @@ public class UpdateProductActivity extends AppCompatActivity {
         }
     }
 
-
-    private int getIndex(Spinner spinner, String value) {
-        for (int i = 0; i < spinner.getCount(); i++) {
-            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(value)) {
-                return i;
-            }
-        }
-        return 0;
-    }
-
     // Method to handle Save button click
     public void onSaveButtonClick(View view) {
-        String name = editTextName.getText().toString().trim();
         String quantityStr = editTextQuantity.getText().toString().trim();
         int quantity = quantityStr.isEmpty() ? 0 : Integer.parseInt(quantityStr);
-        String unit = spinnerUnit.getSelectedItem().toString();
 
-        if (name.isEmpty()) {
-            Toast.makeText(this, "Please enter a product name", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        // Update product details in the database asynchronously
+        new Thread(() -> {
+            // Access the database
+            String productNameStr = productName.getText().toString();
+            Product existingProduct = database.productDao().getProductByName(productNameStr);
 
-        // Update product details in the database
-        productToUpdate.setName(name);
-        productToUpdate.setQuantity(quantity);
-        productToUpdate.setUnit(unit);
-        database.productDao().updateProduct(productToUpdate);
+            if (existingProduct != null) {
+                // Update the quantity of the existing product
+                existingProduct.setQuantity(quantity);
+                // Update the product in the database
+                database.productDao().updateProduct(existingProduct);
+                // Show a toast message indicating successful update on the UI thread
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Product updated successfully", Toast.LENGTH_SHORT).show();
+                    // Start ShoppingListActivity
+                    Intent intent = new Intent(this, ShoppingListActivity.class);
+                    startActivity(intent);
+                    finish(); // Finish UpdateProductActivity to return to ShoppingListActivity
+                });
+            } else {
+                // If the product doesn't exist, show a toast message on the UI thread
+                runOnUiThread(() -> Toast.makeText(this, "Product not found", Toast.LENGTH_SHORT).show());
+            }
+        }).start(); // Start the thread
+    }
 
-        // Navigate back to ShoppingListActivity
-        finish();
+
+    private void updateProductAsync(int quantity) {
+        // Start a new thread to perform database operations
+        new Thread(() -> {
+            // Access the database
+            String productNameStr = productName.getText().toString();
+            Product existingProduct = database.productDao().getProductByName(productNameStr);
+
+            if (existingProduct != null) {
+                // Update the quantity of the existing product
+                existingProduct.setQuantity(quantity);
+                // Update the product in the database
+                database.productDao().updateProduct(existingProduct);
+                // Show a toast message indicating successful update on the UI thread
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Product updated successfully", Toast.LENGTH_SHORT).show();
+                    finish();
+                });
+            } else {
+                // If the product doesn't exist, show a toast message on the UI thread
+                runOnUiThread(() -> Toast.makeText(this, "Product not found", Toast.LENGTH_SHORT).show());
+            }
+        }).start(); // Start the thread
     }
 }
-
 
