@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/productName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Product Name"
+        android:textSize="20sp"
+        android:minHeight="48dp"
+        android:gravity="center" />
+
+    <EditText
+        android:id="@+id/editTextQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/productName"
+        android:hint="Quantity"
+        android:minHeight="48dp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/productUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/productName"
+        android:layout_toRightOf="@id/editTextQuantity"
+        android:textSize="18sp"
+        android:hint="Unit"
+        android:minHeight="48dp"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/buttonDecrement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextQuantity"
+        android:text="-"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/buttonIncrement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextQuantity"
+        android:layout_toRightOf="@id/buttonDecrement"
+        android:text="+"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonDecrement"
+        android:text="Save"
+        android:gravity="center"/>
+
+</RelativeLayout>
+
+
