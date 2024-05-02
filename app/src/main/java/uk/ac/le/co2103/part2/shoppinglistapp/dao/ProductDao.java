@@ -24,6 +24,9 @@ public interface ProductDao {
     @Query("SELECT * FROM product WHERE name = :name LIMIT 1")
     Product getProductByName(String name);
 
+    @Query("SELECT * FROM Product WHERE id = :shoppingListId")
+    LiveData<List<Product>> getProductsByListId(int shoppingListId);
+
     @Update
     void updateProduct(Product productToUpdate);
     @Delete

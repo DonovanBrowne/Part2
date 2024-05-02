@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import uk.ac.le.co2103.part2.R;
 import uk.ac.le.co2103.part2.database.AppDatabase;
@@ -56,7 +58,6 @@ public class ShoppingListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         adapter.setOnItemClickListener(new ProductListAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(Product product) {
@@ -98,10 +99,23 @@ public class ShoppingListActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    private void deleteProduct(Product product) {
-        database.productDao().deleteProduct(product);
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+    private void deleteProduct(final Product product) {
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                // Delete the product from the database on a background thread
+                database.productDao().deleteProduct(product);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Update the UI after deletion
+                        Toast.makeText(ShoppingListActivity.this, "Product deleted", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
+
 }
-
-
-
